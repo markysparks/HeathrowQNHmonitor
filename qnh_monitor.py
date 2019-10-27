@@ -45,7 +45,7 @@ class Controller:
 
     def run(self):
         """Start the application"""
-        self.root.title('Heathrow QNH Monitor v0.4')
+        self.root.title('Heathrow QNH Monitor v1.0')
         self.root.deiconify()
         self.root.mainloop()
 
@@ -62,9 +62,8 @@ class Controller:
 
     def data_check_sched(self):
         """Set a schedule for updating and checking the Heathrow METAR message using a background scheduler. """
-
         scheduler = BackgroundScheduler()
-        trigger = IntervalTrigger(seconds=450)
+        trigger = IntervalTrigger(seconds=180)
 
         scheduler.add_job(self.update_qnh, trigger)
         scheduler.start()
