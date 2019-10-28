@@ -56,7 +56,6 @@ class QNHview:
 class ControlsView:
     """ GUI elements - monitoring, update and exit buttons"""
     def __init__(self, root):
-
         self.frame_controls = ttk.Frame(root)
         self.frame_controls.grid(row=2, column=0, padx=5, pady=5)
 
@@ -65,6 +64,11 @@ class ControlsView:
 
         self.status_label = ttk.Label(self.frame_controls, width=20, text='                 ')
         self.status_label.grid(sticky=tk.W, row=0, column=1, padx=5, pady=5)
+
+        self.hh20_alert = tk.IntVar()
+        self.hh20_checkbox = ttk.Checkbutton(self.frame_controls, text='HH+20 Alert',
+                                             variable=self.hh20_alert)
+        self.hh20_checkbox.grid(sticky=tk.E, row=0, column=3, padx=5, pady=5)
 
         self.update_data_button = ttk.Button(self.frame_controls, text='Update Now')
         self.update_data_button.grid(sticky=tk.W, row=0, column=4, padx=5, pady=5)

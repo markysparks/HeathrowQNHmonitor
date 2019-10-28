@@ -5,6 +5,7 @@ import get_qnh
 import qnh_monitor_gui as gui
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
+from apscheduler.triggers.cron import CronTrigger
 
 logging.basicConfig()
 
@@ -47,6 +48,7 @@ class Controller:
         """Start the application"""
         self.root.title('Heathrow QNH Monitor v1.0')
         self.root.deiconify()
+        self.main_view.controls_view.hh20_alert.set(1)
         self.root.mainloop()
 
     def start_monitor(self, event):
@@ -66,6 +68,7 @@ class Controller:
         trigger = IntervalTrigger(seconds=180)
 
         scheduler.add_job(self.update_qnh, trigger)
+        scheduler.add_job(self.hh20_obs_alert, CronTrigger(minute=20))
         scheduler.start()
 
     def update_data_now(self, event):
@@ -73,6 +76,11 @@ class Controller:
         :param event: 'Update Now' button pressed.
         """
         self.update_qnh()
+        print(self.main_view.controls_view.hh20_alert.get())
+
+    def hh20_obs_alert(self):
+        if self.main_view.controls_view.hh20_alert.get() == 1:
+            tkMessageBox.showwarning('HH+20 OBSERVATION ALERT', 'HH+20 Observation Required...')
 
     def update_qnh(self):
         """ Get the latest QNH and obs time readings, check if time is different from last METAR and if
